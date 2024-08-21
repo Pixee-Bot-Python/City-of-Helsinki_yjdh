@@ -56,7 +56,7 @@ class EauthAuthenticationRequestView(View):
             headers={
                 "X-AsiointivaltuudetAuthorization": checksum_header,
             },
-        )
+        timeout=60)
         response.raise_for_status()
         return response.json()
 
@@ -182,7 +182,7 @@ class EauthAuthenticationCallbackView(View):
         response = requests.post(
             token_url,
             auth=auth_header,
-        )
+        timeout=60)
         response.raise_for_status()
 
         return response.json()
