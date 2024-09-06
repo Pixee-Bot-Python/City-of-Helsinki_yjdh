@@ -15,6 +15,7 @@ from applications.enums import ApplicationStatus
 from applications.models import AhjoDecisionText, Application
 from calculator.enums import RowType
 from calculator.models import Calculation, CalculationRow
+import lxml.etree
 
 XML_VERSION = "<?xml version='1.0' encoding='UTF-8'?>"
 XML_SCHEMA_PATH = os.path.join(
@@ -48,10 +49,10 @@ class AhjoXMLBuilder:
     def validate_against_schema(self, xml_string: str, xsd_string: str) -> bool:
         try:
             # Parse the XML string
-            xml_doc = etree.fromstring(xml_string.encode("utf-8"))
+            xml_doc = etree.fromstring(xml_string.encode("utf-8"), parser=lxml.etree.XMLParser(resolve_entities=False))
 
             # Parse the XSD schema
-            xsd_doc = etree.fromstring(xsd_string.encode("utf-8"))
+            xsd_doc = etree.fromstring(xsd_string.encode("utf-8"), parser=lxml.etree.XMLParser(resolve_entities=False))
             schema = XMLSchema(xsd_doc)
 
             # Validate the XML against the schema
