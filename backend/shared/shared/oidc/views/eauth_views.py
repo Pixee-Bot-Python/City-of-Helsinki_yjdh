@@ -20,6 +20,7 @@ from shared.oidc.utils import (
     get_userinfo,
     store_token_info_in_eauth_session,
 )
+from security import safe_requests
 
 logger = logging.getLogger(__name__)
 
@@ -51,7 +52,7 @@ class EauthAuthenticationRequestView(View):
 
         checksum_header = get_checksum_header(path)
 
-        response = requests.get(
+        response = safe_requests.get(
             settings.EAUTHORIZATIONS_BASE_URL + path,
             headers={
                 "X-AsiointivaltuudetAuthorization": checksum_header,

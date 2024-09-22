@@ -3,6 +3,7 @@ import logging
 import requests
 from django.conf import settings
 from rest_framework.exceptions import APIException
+from security import safe_requests
 
 log = logging.getLogger(__name__)
 
@@ -46,14 +47,14 @@ class ClamavClient:
         if not self.BASE_URL:
             return
 
-        response = requests.get(self.BASE_URL + "version")
+        response = safe_requests.get(self.BASE_URL + "version")
         return response.json()
 
     def ping(self):
         if not self.BASE_URL:
             return
 
-        response = requests.get(self.BASE_URL + "ping")
+        response = safe_requests.get(self.BASE_URL + "ping")
         return response.json()
 
 
