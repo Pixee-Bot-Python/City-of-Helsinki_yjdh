@@ -1,5 +1,4 @@
 import os
-import random
 import uuid
 from datetime import date, timedelta
 
@@ -56,6 +55,7 @@ from shared.common.tests.factories import UserFactory
 from shared.service_bus.enums import YtjOrganizationCode
 from terms.tests.conftest import *  # noqa
 from terms.tests.factories import TermsOfServiceApprovalFactory
+import secrets
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -261,7 +261,7 @@ def cancelled_applications():
 @pytest.fixture()
 def cancelled_delete_date():
     """Return a random date between 30 and 365 days ago"""
-    return timezone.now() - timedelta(days=random.randint(30, 365))
+    return timezone.now() - timedelta(days=secrets.SystemRandom().randint(30, 365))
 
 
 @pytest.fixture()
@@ -284,7 +284,7 @@ def draft_applications():
 @pytest.fixture()
 def draft_delete_date():
     """Return a random date between 180 and 365 days ago"""
-    return timezone.now() - timedelta(days=random.randint(180, 365))
+    return timezone.now() - timedelta(days=secrets.SystemRandom().randint(180, 365))
 
 
 @pytest.fixture()
@@ -295,7 +295,7 @@ def drafts_to_delete(draft_delete_date, draft_applications):
 
 @pytest.fixture()
 def draft_keep_date():
-    return timezone.now() - timedelta(days=random.randint(1, 59))
+    return timezone.now() - timedelta(days=secrets.SystemRandom().randint(1, 59))
 
 
 @pytest.fixture()
@@ -527,8 +527,8 @@ def multiple_applications_with_ahjo_case_id(
 
 
 def generate_ahjo_case_id():
-    year = random.randint(2000, 2099)
-    case_id = random.randint(10000, 99999)
+    year = secrets.SystemRandom().randint(2000, 2099)
+    case_id = secrets.SystemRandom().randint(10000, 99999)
     return f"HEL {year} {case_id}"
 
 

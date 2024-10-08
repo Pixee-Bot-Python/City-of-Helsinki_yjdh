@@ -1,5 +1,4 @@
 import os
-import random
 from datetime import timedelta
 
 import factory.random
@@ -8,13 +7,14 @@ from django.conf import settings
 from langdetect import DetectorFactory
 
 from common.tests.conftest import *  # noqa
+import secrets
 
 
 @pytest.fixture(autouse=True)
 def setup_test_environment(settings):
     DetectorFactory.seed = 0
     factory.random.reseed_random("888")
-    random.seed(888)
+    secrets.SystemRandom().seed(888)
 
 
 @pytest.fixture
