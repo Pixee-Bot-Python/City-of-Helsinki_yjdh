@@ -1,5 +1,5 @@
-import requests
 from django.conf import settings
+from security import safe_requests
 
 
 class YTJClient:
@@ -12,7 +12,7 @@ class YTJClient:
             raise ValueError("YTJ client settings not configured.")
 
     def _get(self, url: str, **kwargs) -> dict:
-        response = requests.get(url, timeout=settings.YTJ_TIMEOUT, **kwargs)
+        response = safe_requests.get(url, timeout=settings.YTJ_TIMEOUT, **kwargs)
         response.raise_for_status()
         return response.json()
 

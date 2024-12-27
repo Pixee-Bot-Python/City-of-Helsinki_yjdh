@@ -7,6 +7,7 @@ from requests.exceptions import ConnectionError, HTTPError, RequestException, Ti
 from rest_framework.exceptions import PermissionDenied, ValidationError
 
 from events.exceptions import LinkedEventsException
+from security import safe_requests
 
 LOGGER = logging.getLogger(__name__)
 
@@ -88,7 +89,7 @@ class LinkedEventsClient:
         nexturl = None
         while True:
             if nexturl:
-                r = requests.get(nexturl, headers=self._headers())
+                r = safe_requests.get(nexturl, headers=self._headers())
             else:
                 params = {
                     "data_source": "tet",
@@ -101,7 +102,7 @@ class LinkedEventsClient:
                 if text:
                     params["text"] = text
 
-                r = requests.get(
+                r = safe_requests.get(
                     urljoin(settings.LINKEDEVENTS_URL, "event/"),
                     headers=self._headers(),
                     params=params,
@@ -161,7 +162,7 @@ class LinkedEventsClient:
 
     def get_url(self, url):
         # TODO check that url.startswith(settings.LINKEDEVENTS_URL)
-        r = requests.get(url, headers=self._headers())
+        r = safe_requests.get(url, headers=self._headers())
         # TODO better error handling
         r.raise_for_status()
         return r.json()
@@ -211,7 +212,7 @@ class LinkedEventsClient:
 
         Returns a generator that yields one page of images at a time.
         """
-        r = requests.get(
+        r = safe_requests.get(
             urljoin(settings.LINKEDEVENTS_URL, "image/"),
             params={
                 "data_source": "tet",
@@ -224,7 +225,7 @@ class LinkedEventsClient:
         yield data["data"]
 
         while data["meta"]["next"] is not None:
-            r = requests.get(
+            r = safe_requests.get(
                 data["meta"]["next"], timeout=settings.LINKEDEVENTS_TIMEOUT
             )
             r.raise_for_status()
