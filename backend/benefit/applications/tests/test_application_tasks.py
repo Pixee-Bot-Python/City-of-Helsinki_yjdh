@@ -1,5 +1,4 @@
 import os
-import random
 import uuid
 from datetime import datetime, timedelta
 from io import StringIO
@@ -18,6 +17,7 @@ from applications.enums import (
 from applications.models import AhjoSetting, Application, Attachment
 from applications.services.ahjo_authentication import AhjoToken
 from applications.tests.factories import CancelledApplicationFactory
+import secrets
 
 
 def test_seed_applications_with_arguments(set_debug_to_true):
@@ -57,7 +57,7 @@ def test_delete_cancelled_applications_older_than_30_days(cancelled_to_delete):
         for a in Attachment.objects.filter(application__in=cancelled_to_delete)
     ]
     for _ in range(5):
-        days = random.randint(1, 29)
+        days = secrets.SystemRandom().randint(1, 29)
         CancelledApplicationFactory(modified_at=timezone.now() - timedelta(days=days))
 
     applications = Application.objects.filter(status=status)

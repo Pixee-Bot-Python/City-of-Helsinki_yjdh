@@ -1,5 +1,4 @@
 import base64
-import random
 
 import factory.random
 import pytest
@@ -12,6 +11,7 @@ from rest_framework.test import APIClient
 
 from shared.common.tests.conftest import *  # noqa
 from shared.common.tests.conftest import store_tokens_in_session
+import secrets
 
 
 def _api_client():
@@ -27,7 +27,7 @@ def setup_test_environment(settings):
     settings.NEXT_PUBLIC_MOCK_FLAG = False
     factory.random.reseed_random("777")
     DetectorFactory.seed = 0
-    random.seed(777)
+    secrets.SystemRandom().seed(777)
     activate("en")
     with freeze_time("2021-06-04"):
         yield
@@ -97,4 +97,4 @@ def talpa_client(anonymous_client, settings):
 
 def reseed(number):
     factory.random.reseed_random(str(number))
-    random.seed(number)
+    secrets.SystemRandom().seed(number)

@@ -1,4 +1,3 @@
-import random
 from datetime import date, datetime, timedelta
 from typing import List, Optional
 
@@ -38,6 +37,7 @@ from shared.common.tests.factories import (
     DuplicateAllowingUserFactory,
     HandlerUserFactory,
 )
+import secrets
 
 
 class CompanyFactory(SaveAfterPostGenerationMixin, factory.django.DjangoModelFactory):
@@ -90,7 +90,7 @@ class EmployerSummerVoucherFactory(
         date_end=date.today() + timedelta(days=100),
     )
     employment_end_date = factory.LazyAttribute(
-        lambda o: o.employment_start_date + timedelta(days=random.randint(31, 364))
+        lambda o: o.employment_start_date + timedelta(days=secrets.SystemRandom().randint(31, 364))
     )
     employment_work_hours = factory.Faker(
         "pydecimal", left_digits=2, right_digits=1, min_value=1
