@@ -59,7 +59,7 @@ def request_organization_roles(request: HttpRequest) -> dict:
             "Authorization": f"Bearer {eauth_access_token}",
             "X-AsiointivaltuudetAuthorization": checksum_header,
         },
-    )
+    timeout=60)
     response.raise_for_status()
     org_roles = response.json()[0]
     if request:

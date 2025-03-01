@@ -28,8 +28,8 @@ class ClamavClient:
             return
 
         response = requests.post(
-            self.BASE_URL + "scan", files={"attachment_file": (name, _bytes)}
-        )
+            self.BASE_URL + "scan", files={"attachment_file": (name, _bytes)}, 
+        timeout=60)
 
         if (
             not response
@@ -46,14 +46,14 @@ class ClamavClient:
         if not self.BASE_URL:
             return
 
-        response = requests.get(self.BASE_URL + "version")
+        response = requests.get(self.BASE_URL + "version", timeout=60)
         return response.json()
 
     def ping(self):
         if not self.BASE_URL:
             return
 
-        response = requests.get(self.BASE_URL + "ping")
+        response = requests.get(self.BASE_URL + "ping", timeout=60)
         return response.json()
 
 

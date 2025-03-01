@@ -88,7 +88,7 @@ class LinkedEventsClient:
         nexturl = None
         while True:
             if nexturl:
-                r = requests.get(nexturl, headers=self._headers())
+                r = requests.get(nexturl, headers=self._headers(), timeout=60)
             else:
                 params = {
                     "data_source": "tet",
@@ -105,7 +105,7 @@ class LinkedEventsClient:
                     urljoin(settings.LINKEDEVENTS_URL, "event/"),
                     headers=self._headers(),
                     params=params,
-                )
+                timeout=60)
 
             # TODO this doesn't use error handling from _api_call
             r.raise_for_status()
@@ -148,7 +148,7 @@ class LinkedEventsClient:
             urljoin(settings.LINKEDEVENTS_URL, "event/" + id),
             headers=self._headers(),
             params=params,
-        )
+        timeout=60)
         return r.status_code
 
     def update_event(self, eventid, event):
@@ -161,7 +161,7 @@ class LinkedEventsClient:
 
     def get_url(self, url):
         # TODO check that url.startswith(settings.LINKEDEVENTS_URL)
-        r = requests.get(url, headers=self._headers())
+        r = requests.get(url, headers=self._headers(), timeout=60)
         # TODO better error handling
         r.raise_for_status()
         return r.json()
@@ -172,7 +172,7 @@ class LinkedEventsClient:
             headers={"apikey": settings.LINKEDEVENTS_API_KEY},
             data=body,
             files=files,
-        )
+        timeout=60)
         try:
             r.raise_for_status()
         except HTTPError as e:
