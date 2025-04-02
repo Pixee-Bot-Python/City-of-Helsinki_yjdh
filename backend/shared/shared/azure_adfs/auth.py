@@ -8,6 +8,7 @@ from django.core.exceptions import PermissionDenied
 from django_auth_adfs.backend import AdfsAuthCodeBackend
 from django_auth_adfs.config import ConfigLoadError, provider_config, settings
 from django_auth_adfs.exceptions import MFARequired
+from security import safe_requests
 
 LOGGER = logging.getLogger(__name__)
 
@@ -108,7 +109,7 @@ class HelsinkiAdfsAuthCodeBackend(AdfsAuthCodeBackend):
             "Authorization": f"Bearer {graph_api_access_token}",
         }
 
-        response = requests.get(
+        response = safe_requests.get(
             url, headers=headers, params=f"$select={','.join(properties)}"
         )
 

@@ -3,6 +3,7 @@ from django.conf import settings
 from requests import RequestException
 
 from shared.helsinki_profile.exceptions import HelsinkiProfileException
+from security import safe_requests
 
 
 class HelsinkiProfileClient:
@@ -90,7 +91,7 @@ class HelsinkiProfileClient:
         Exchanges OIDC access token for API access token using Tunnistamo
         """
         try:
-            response = requests.get(
+            response = safe_requests.get(
                 settings.TUNNISTAMO_API_TOKENS_ENDPOINT,
                 headers={"Authorization": f"Bearer {oidc_access_token}"},
                 timeout=10,
