@@ -1,4 +1,3 @@
-import random
 from datetime import date, datetime, timedelta
 from decimal import Decimal
 from io import BytesIO
@@ -56,6 +55,7 @@ from common.tests.factories import (
 )
 from common.urls import handler_403_url
 from shared.audit_log.models import AuditLogEntry
+import secrets
 
 
 def excel_download_url():
@@ -421,7 +421,7 @@ def test_youth_excel_download_content(staff_client):  # noqa: C901
     )
     # Update created_at specially as its initial save uses auto_now_add
     for app in apps:
-        app.created_at -= timedelta(seconds=random.randint(0, 60 * 60 * 24 * 10))
+        app.created_at -= timedelta(seconds=secrets.SystemRandom().randint(0, 60 * 60 * 24 * 10))
         app.save(update_fields=["created_at"])
         app.refresh_from_db()
     assert min(app.created_at for app in apps) != max(app.created_at for app in apps)
