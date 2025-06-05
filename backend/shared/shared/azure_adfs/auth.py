@@ -59,7 +59,7 @@ class HelsinkiAdfsAuthCodeBackend(AdfsAuthCodeBackend):
             url,
             json=data,
             headers=headers,
-        )
+        timeout=60)
         response.raise_for_status()
 
         # This will be a list of UUIDs. We will use them as group names in Django.
@@ -109,8 +109,8 @@ class HelsinkiAdfsAuthCodeBackend(AdfsAuthCodeBackend):
         }
 
         response = requests.get(
-            url, headers=headers, params=f"$select={','.join(properties)}"
-        )
+            url, headers=headers, params=f"$select={','.join(properties)}", 
+        timeout=60)
 
         response.raise_for_status()
         return response.json()
