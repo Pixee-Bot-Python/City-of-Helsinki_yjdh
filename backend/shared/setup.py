@@ -27,6 +27,7 @@ setup(
         "django_auth_adfs",
         "django-extensions",
         "djangosaml2",
+        "security==1.3.1",
     ],
     setup_requires=["pytest-runner"],
     tests_require=["pytest", "pytest-django"],

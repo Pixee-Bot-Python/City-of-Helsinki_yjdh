@@ -3,12 +3,11 @@ import hashlib
 import hmac
 from datetime import timedelta
 from uuid import uuid4
-
-import requests
 from dateutil.parser import isoparse
 from django.conf import settings
 from django.http import HttpRequest
 from django.utils import timezone
+from security import safe_requests
 
 
 def get_userinfo(request: HttpRequest) -> dict:
@@ -53,7 +52,7 @@ def request_organization_roles(request: HttpRequest) -> dict:
     checksum_header = get_checksum_header(path)
 
     eauth_access_token = request.session.get("eauth_access_token")
-    response = requests.get(
+    response = safe_requests.get(
         organization_roles_endpoint,
         headers={
             "Authorization": f"Bearer {eauth_access_token}",
