@@ -1,5 +1,4 @@
 import decimal
-import random
 from datetime import date, timedelta
 
 import factory
@@ -16,6 +15,7 @@ from calculator.models import (
 )
 from common.utils import duration_in_months
 from companies.tests.factories import CompanyFactory
+import secrets
 
 
 class PaySubsidyFactory(factory.django.DjangoModelFactory):
@@ -26,7 +26,7 @@ class PaySubsidyFactory(factory.django.DjangoModelFactory):
         date_end=date.today() + timedelta(days=100),
     )
     end_date = factory.LazyAttribute(
-        lambda o: o.start_date + timedelta(days=random.randint(31, 364))
+        lambda o: o.start_date + timedelta(days=secrets.SystemRandom().randint(31, 364))
     )
     pay_subsidy_percent = 50
     work_time_percent = decimal.Decimal(100)
@@ -45,7 +45,7 @@ class TrainingCompensationFactory(factory.django.DjangoModelFactory):
         date_end=date.today() + timedelta(days=100),
     )
     end_date = factory.LazyAttribute(
-        lambda o: o.start_date + timedelta(days=random.randint(31, 364))
+        lambda o: o.start_date + timedelta(days=secrets.SystemRandom().randint(31, 364))
     )
     monthly_amount = factory.Faker(
         "pydecimal", left_digits=3, right_digits=2, min_value=0
@@ -77,7 +77,7 @@ class CalculationFactory(factory.django.DjangoModelFactory):
         date_end=date.today() + timedelta(days=100),
     )
     end_date = factory.LazyAttribute(
-        lambda o: o.start_date + timedelta(days=random.randint(31, 364))
+        lambda o: o.start_date + timedelta(days=secrets.SystemRandom().randint(31, 364))
     )
     state_aid_max_percentage = factory.Faker(
         "random_element", elements=[v[0] for v in STATE_AID_MAX_PERCENTAGE_CHOICES]
@@ -131,7 +131,7 @@ class PreviousBenefitFactory(factory.django.DjangoModelFactory):
         date_end=date(2021, 12, 31),
     )
     end_date = factory.LazyAttribute(
-        lambda o: o.start_date + timedelta(days=random.randint(31, 364))
+        lambda o: o.start_date + timedelta(days=secrets.SystemRandom().randint(31, 364))
     )
     monthly_amount = factory.Faker(
         "pydecimal", left_digits=3, right_digits=2, min_value=0

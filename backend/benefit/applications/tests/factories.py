@@ -1,6 +1,5 @@
 import itertools
 import os
-import random
 from datetime import date, timedelta
 
 import factory
@@ -33,6 +32,7 @@ from calculator.models import Calculation
 from companies.tests.factories import CompanyFactory
 from shared.service_bus.enums import YtjOrganizationCode
 from users.tests.factories import BFHandlerUserFactory
+import secrets
 
 
 class AhjoDecisionTextFactory(factory.django.DjangoModelFactory):
@@ -133,14 +133,14 @@ class ApplicationFactory(factory.django.DjangoModelFactory):
         date_end=date.today() + timedelta(days=100),
     )
     end_date = factory.LazyAttribute(
-        lambda o: o.start_date + timedelta(days=random.randint(31, 364))
+        lambda o: o.start_date + timedelta(days=secrets.SystemRandom().randint(31, 364))
     )
     de_minimis_aid = True
     status = ApplicationStatus.DRAFT
 
     @factory.post_generation
     def bases(self, created, extracted, **kwargs):
-        if basis_count := kwargs.pop("basis_count", random.randint(1, 5)):
+        if basis_count := kwargs.pop("basis_count", secrets.SystemRandom().randint(1, 5)):
             for bt in ApplicationBasisFactory.create_batch(basis_count, **kwargs):
                 self.bases.add(bt)
 
